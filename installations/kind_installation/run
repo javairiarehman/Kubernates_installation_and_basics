@@ -1,0 +1,15 @@
+chmod +x install_docker.sh install_kind.sh install_kubectl.sh
+
+# 1) Docker
+./install_docker.sh
+# -> Open a NEW terminal (or run: newgrp docker)
+
+# 2) KIND
+./install_kind.sh
+
+# 3) kubectl
+./install_kubectl.sh
+
+# Create and test a cluster
+kind create cluster --name dev
+kubectl get nodes
