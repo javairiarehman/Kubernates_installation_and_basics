@@ -1,0 +1,123 @@
+Kubernetes Basics Manual
+What is Kubernetes?
+Kubernetes is an open-source container orchestration platform that automates the deployment, management, and scaling of containerized applications.
+
+1. Orchestration
+Meaning in Kubernetes:
+Orchestration is the automatic arrangement, coordination, and management of containers across multiple machines (nodes) in a cluster.
+
+Kubernetes does the following:
+
+Decides where each container should run.
+
+Ensures the desired number of containers are always running.
+
+Handles container failures by restarting or moving them automatically.
+
+Manages networking, storage, and updates without manual intervention.
+
+2. Scaling
+Scaling Up
+Definition: Increasing the number of container instances (replicas) to handle higher traffic or workload.
+
+In Kubernetes: Done automatically via Horizontal Pod Autoscaler (HPA) or manually with:
+
+bash
+Copy
+Edit
+kubectl scale deployment myapp --replicas=10
+Example: Scale from 3 pods → 10 pods during peak hours.
+
+Scaling Down
+Definition: Decreasing container instances when demand is low to save resources.
+
+In Kubernetes: Done automatically via HPA or manually.
+
+Example: Scale from 10 pods → 3 pods after peak hours.
+
+3. Kubernetes Architecture
+A Kubernetes cluster has two main parts:
+
+A. Master Node (Control Plane)
+The brain of Kubernetes — manages the cluster.
+
+Component	Description
+API Server	The entry point for all Kubernetes commands (via kubectl or API calls).
+Scheduler	Decides which node runs a new pod based on resource availability.
+Controller Manager	Ensures desired cluster state matches actual state (e.g., keeps replicas running).
+etcd	Key-value database storing cluster configuration and state.
+
+B. Worker Nodes
+The machines where application workloads (pods) run.
+
+Component	Description
+Kubelet	Agent that communicates with the master node to run pods.
+Kube-Proxy	Handles network communication inside/outside the cluster.
+Container Runtime	Software that runs containers (e.g., Docker, containerd).
+
+Kubernetes Cluster Diagram:
+pgsql
+Copy
+Edit
+                +-------------------------+
+                |     Master Node          |
+                |--------------------------|
+                | API Server               |
+                | Scheduler                |
+                | Controller Manager       |
+                | etcd                     |
+                +-------------------------+
+                         |
+     -------------------------------------------------
+     |                       |                       |
++------------+         +------------+         +------------+
+| Worker 1   |         | Worker 2   |         | Worker 3   |
+|------------|         |------------|         |------------|
+| Kubelet    |         | Kubelet    |         | Kubelet    |
+| Kube-Proxy |         | Kube-Proxy |         | Kube-Proxy |
+| Container  |         | Container  |         | Container  |
+| Runtime    |         | Runtime    |         | Runtime    |
++------------+         +------------+         +------------+
+4. Monolithic vs Microservices
+Feature	Monolithic	Microservices
+Deployment	One big package	Independent services
+Scalability	Scale whole app	Scale specific services
+Fault isolation	Low	High
+Technology stack	Single stack	Different stacks possible
+Example	One app for e-commerce	Separate services for catalog, payment, users
+
+5. Ways to Create a Kubernetes Cluster
+1. kubeadm
+Description: CLI tool to set up a production-like Kubernetes cluster manually.
+
+Pros: Good for learning internals; production-like.
+
+Cons: More complex setup; needs multiple machines or VMs.
+
+2. Minikube
+Description: Runs a single-node Kubernetes cluster locally in a VM or container.
+
+Pros: Beginner-friendly; built-in dashboard.
+
+Cons: Heavier than KIND; slower startup.
+
+3. KIND (Kubernetes IN Docker)
+Description: Runs Kubernetes inside Docker containers — lightweight.
+
+Pros: Fast; low resource usage; good for testing.
+
+Cons: Less realistic networking compared to Minikube.
+
+6. Minikube vs KIND
+Feature / Aspect	Minikube	KIND
+Runs in	VM or container	Docker containers
+Resource usage	Higher	Lower
+Startup speed	Slower	Faster
+Realism	More production-like	Lightweight simulation
+Best for	Learning, real cluster simulation	Quick tests, CI/CD
+Dashboard support	Built-in	Manual install
+Multi-cluster support	Possible but heavier	Easy and lightweight
+
+Summary
+Kubernetes lets you orchestrate containers, scale up and down automatically, and manage apps efficiently across master and worker nodes.
+You can create clusters using kubeadm, Minikube, or KIND depending on your needs.
